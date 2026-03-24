@@ -1,60 +1,183 @@
-🍽️ Restaurante elegante
-comer despacio
-hablar con la boca llena
-🤒 Amigo enfermo
-descansar
-salir de fiesta
-📚 Biblioteca
-hablar en voz baja
-hacer ruido
-🇪🇸 Aprender español
-practicar todos los días
-estudiar solo gramática
-🏋️ Gimnasio
-estirarse
-hacer los ejercicios rápido
-💕 Cita
-escuchar
-hablar solo de ti
-🏫 Clase
-participar
-copiar en el examen
-✈️ Aeropuerto
-llegar temprano
-perder el billete
-🏠 En casa
-limpiar
-dejar todo desordenado
-🚗 En el coche
-conducir con cuidado
-ir muy rápido
-🛒 Supermercado
-mirar los precios
-comprar cosas innecesarias
-🧑‍⚕️ Médico
-explicar los síntomas
-ignorar las recomendaciones
-🎉 Fiesta
-bailar
-beber demasiado
-🧑‍🤝‍🧑 Con amigos
-compartir
-interrumpir
-🌙 Antes de dormir
-relajarse
-ver series toda la noche
-🍳 En la cocina
-seguir la receta
-poner demasiada sal
-📖 Estudiando para un examen
-organizar el tiempo
-empezar a última hora
-🧘‍♂️ Estrés
-respirar profundo
-preocuparse por todo
-🧳 Viaje
-hacer la maleta con tiempo
-olvidar cosas importantes
-🏖️ Vacaciones
-descansar
-planificar todo demasiado
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica de Imperativo - GitHub Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .is-flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .btn-reveal {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        }
+
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen flex flex-col items-center">
+
+    <div class="max-w-2xl w-full text-center mb-8">
+        <h1 class="text-4xl font-bold text-gray-800 mb-2">🎲 El Imperativo (Tú)</h1>
+        <p class="text-lg text-gray-600">Mira la situación y las acciones. Piensa la respuesta y luego comprueba.</p>
+        
+        <div class="mt-6 flex justify-center gap-4 text-sm">
+            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full font-semibold">✅ Afirmativo</span>
+            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full font-semibold">❌ Negativo</span>
+        </div>
+    </div>
+
+    <!-- Contenedor de la Tarjeta -->
+    <div id="card-container" class="relative w-full max-w-md h-[500px] perspective-1000 group">
+        <div id="card-inner" class="card-inner relative w-full h-full shadow-2xl rounded-3xl cursor-pointer">
+            
+            <!-- Frontal (Pregunta) -->
+            <div class="card-front bg-white rounded-3xl p-8 flex flex-col items-center justify-between border-2 border-indigo-100">
+                <div id="icon-display" class="text-7xl mb-4">🍽️</div>
+                <h2 id="situation-title" class="text-2xl font-bold text-indigo-900 mb-6 text-center uppercase tracking-wide">Restaurante elegante</h2>
+                
+                <div class="w-full space-y-4 text-left">
+                    <div class="flex items-center space-x-3 bg-indigo-50 p-4 rounded-xl">
+                        <span class="text-indigo-600 font-bold text-xl">1.</span>
+                        <p class="text-gray-700 font-medium"><span id="verb-1">comer</span> despacio</p>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-indigo-50 p-4 rounded-xl">
+                        <span class="text-indigo-600 font-bold text-xl">2.</span>
+                        <p class="text-gray-700 font-medium"><span id="verb-2">hablar</span> con la boca llena</p>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-gray-400 text-sm animate-pulse text-center">Toca la tarjeta para ver la respuesta</div>
+            </div>
+
+            <!-- Trasera (Respuesta) -->
+            <div class="card-back bg-indigo-900 rounded-3xl p-8 flex flex-col items-center justify-center text-white border-2 border-indigo-700">
+                <h3 class="text-xl font-semibold mb-6 text-indigo-200 uppercase tracking-widest text-center">Tú deberías...</h3>
+                
+                <div class="space-y-6 w-full">
+                    <div class="text-center">
+                        <p class="text-green-400 text-3xl font-bold mb-1" id="answer-1">¡Come!</p>
+                        <p class="text-indigo-100 italic text-lg" id="full-answer-1">¡Come despacio!</p>
+                    </div>
+                    
+                    <div class="h-px bg-indigo-700 w-full opacity-50"></div>
+
+                    <div class="text-center">
+                        <p class="text-red-400 text-3xl font-bold mb-1" id="answer-2">¡No hables!</p>
+                        <p class="text-indigo-100 italic text-lg" id="full-answer-2">¡No hables con la boca llena!</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-indigo-300 text-sm">Toca para volver a la pregunta</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Controles -->
+    <div class="mt-10 flex gap-4">
+        <button id="prev-btn" class="bg-white border-2 border-indigo-500 text-indigo-500 px-6 py-3 rounded-2xl font-bold hover:bg-indigo-50 transition-colors">
+            Anterior
+        </button>
+        <button id="next-btn" class="btn-reveal text-white px-8 py-3 rounded-2xl font-bold shadow-lg hover:opacity-90 transition-opacity">
+            Siguiente
+        </button>
+    </div>
+
+    <div class="mt-6 text-gray-500 font-medium" id="counter">
+        Tarjeta 1 de 21
+    </div>
+
+    <script>
+        const exercises = [
+            { icon: "🍽️", title: "Restaurante elegante", v1: "comer", extra1: "despacio", a1: "¡Come!", v2: "hablar", extra2: "con la boca llena", a2: "¡No hables!" },
+            { icon: "🤒", title: "Amigo enfermo", v1: "descansar", extra1: "", a1: "¡Descansa!", v2: "salir", extra2: "de fiesta", a2: "¡No salgas!" },
+            { icon: "📚", title: "Biblioteca", v1: "hablar", extra1: "en voz baja", a1: "¡Habla!", v2: "hacer", extra2: "ruido", a2: "¡No hagas!" },
+            { icon: "🇪🇸", title: "Aprender español", v1: "practicar", extra1: "todos los días", a1: "¡Practica!", v2: "estudiar", extra2: "solo gramática", a2: "¡No estudies!" },
+            { icon: "🏋️", title: "Gimnasio", v1: "estirarse", extra1: "", a1: "¡Estírate!", v2: "hacer", extra2: "los ejercicios rápido", a2: "¡No hagas!" },
+            { icon: "💕", title: "Cita", v1: "escuchar", extra1: "", a1: "¡Escucha!", v2: "hablar", extra2: "solo de ti", a2: "¡No hables!" },
+            { icon: "🏫", title: "Clase", v1: "participar", extra1: "", a1: "¡Participa!", v2: "copiar", extra2: "en el examen", a2: "¡No copies!" },
+            { icon: "✈️", title: "Aeropuerto", v1: "llegar", extra1: "temprano", a1: "¡Llega!", v2: "perder", extra2: "el billete", a2: "¡No pierdas!" },
+            { icon: "🏠", title: "En casa", v1: "limpiar", extra1: "", a1: "¡Limpia!", v2: "dejar", extra2: "todo desordenado", a2: "¡No dejes!" },
+            { icon: "🚗", title: "En el coche", v1: "conducir", extra1: "con cuidado", a1: "¡Conduce!", v2: "ir", extra2: "muy rápido", a2: "¡No vayas!" },
+            { icon: "🛒", title: "Supermercado", v1: "mirar", extra1: "los precios", a1: "¡Mira!", v2: "comprar", extra2: "cosas innecesarias", a2: "¡No compres!" },
+            { icon: "🧑‍⚕️", title: "Médico", v1: "explicar", extra1: "los síntomas", a1: "¡Explica!", v2: "ignorar", extra2: "las recomendaciones", a2: "¡No ignores!" },
+            { icon: "🎉", title: "Fiesta", v1: "bailar", extra1: "", a1: "¡Baila!", v2: "beber", extra2: "demasiado", a2: "¡No bebas!" },
+            { icon: "🧑‍🤝‍🧑", title: "Con amigos", v1: "compartir", extra1: "", a1: "¡Comparte!", v2: "interrumpir", extra2: "", a2: "¡No interrumpas!" },
+            { icon: "🌙", title: "Antes de dormir", v1: "relajarse", extra1: "", a1: "¡Relájate!", v2: "ver", extra2: "series toda la noche", a2: "¡No veas!" },
+            { icon: "🍳", title: "En la cocina", v1: "seguir", extra1: "la receta", a1: "¡Sigue!", v2: "poner", extra2: "demasiada sal", a2: "¡No pongas!" },
+            { icon: "📖", title: "Estudiando", v1: "organizar", extra1: "el tiempo", a1: "¡Organiza!", v2: "empezar", extra2: "a última hora", a2: "¡No empieces!" },
+            { icon: "🧘‍♂️", title: "Estrés", v1: "respirar", extra1: "profundo", a1: "¡Respira!", v2: "preocuparse", extra2: "por todo", a2: "¡No te preocupes!" },
+            { icon: "🧳", title: "Viaje", v1: "hacer", extra1: "la maleta con tiempo", a1: "¡Haz!", v2: "olvidar", extra2: "cosas importantes", a2: "¡No olvides!" },
+            { icon: "🏖️", title: "Vacaciones", v1: "descansar", extra1: "", a1: "¡Descansa!", v2: "planificar", extra2: "todo demasiado", a2: "¡No planifiques!" }
+        ];
+
+        let currentIndex = 0;
+        const inner = document.getElementById('card-inner');
+        
+        function updateCard() {
+            const ex = exercises[currentIndex];
+            document.getElementById('icon-display').innerText = ex.icon;
+            document.getElementById('situation-title').innerText = ex.title;
+            document.getElementById('verb-1').innerText = ex.v1;
+            document.getElementById('verb-2').innerText = ex.v2;
+            
+            document.getElementById('answer-1').innerText = ex.a1;
+            document.getElementById('full-answer-1').innerText = `${ex.a1} ${ex.extra1}`.trim();
+            
+            document.getElementById('answer-2').innerText = ex.a2;
+            document.getElementById('full-answer-2').innerText = `${ex.a2} ${ex.extra2}`.trim();
+            
+            document.getElementById('counter').innerText = `Tarjeta ${currentIndex + 1} de ${exercises.length}`;
+            inner.classList.remove('is-flipped');
+        }
+
+        // Soporte para clic y toque (móviles)
+        inner.addEventListener('click', (e) => {
+            inner.classList.toggle('is-flipped');
+        });
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % exercises.length;
+            updateCard();
+        });
+
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + exercises.length) % exercises.length;
+            updateCard();
+        });
+
+        // Inicialización
+        updateCard();
+    </script>
+</body>
+</html>
