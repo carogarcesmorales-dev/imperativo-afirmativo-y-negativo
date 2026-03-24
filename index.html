@@ -1,129 +1,421 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imperativo (Tú)</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Imperativo (Tú)</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-    <!-- Tailwind FIXED (este sí funciona en GitHub) -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f7fb;
+      color: #1f2937;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+    }
 
-    <style>
-        body {
-            background-color: #f8fafc;
-            font-family: Arial, sans-serif;
-        }
+    .app {
+      width: 100%;
+      max-width: 900px;
+      text-align: center;
+    }
 
-        .card-inner {
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-        }
+    h1 {
+      margin: 0 0 10px;
+      font-size: 2.2rem;
+      color: #111827;
+    }
 
-        .is-flipped .card-inner {
-            transform: rotateY(180deg);
-        }
+    .subtitle {
+      margin: 0 0 24px;
+      color: #4b5563;
+      font-size: 1.05rem;
+    }
 
-        .card-front, .card-back {
-            backface-visibility: hidden;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
+    .badges {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
 
-        .card-back {
-            transform: rotateY(180deg);
-        }
-    </style>
+    .badge {
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: bold;
+      font-size: 0.95rem;
+    }
+
+    .badge.green {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge.red {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .card-wrap {
+      perspective: 1000px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 500px;
+      height: 520px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .front {
+      background: white;
+      border: 2px solid #dbeafe;
+    }
+
+    .back {
+      background: #312e81;
+      color: white;
+      transform: rotateY(180deg);
+      border: 2px solid #4338ca;
+    }
+
+    .icon {
+      font-size: 4rem;
+      margin-top: 8px;
+    }
+
+    .title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin: 10px 0 18px;
+      color: #312e81;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: left;
+      margin-top: 8px;
+    }
+
+    .task {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #eef2ff;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .task-number {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #4338ca;
+      min-width: 24px;
+    }
+
+    .task-text {
+      font-size: 1.15rem;
+      line-height: 1.4;
+    }
+
+    .hint {
+      color: #6b7280;
+      font-size: 0.95rem;
+      margin-top: 18px;
+    }
+
+    .back-title {
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #c7d2fe;
+      margin-top: 20px;
+    }
+
+    .answer-block {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      width: 100%;
+      margin: 30px 0;
+    }
+
+    .answer-main-green {
+      color: #86efac;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .answer-main-red {
+      color: #fca5a5;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .answer-full {
+      font-size: 1.2rem;
+      color: #eef2ff;
+      font-style: italic;
+    }
+
+    .divider {
+      height: 1px;
+      background: rgba(199, 210, 254, 0.25);
+      width: 100%;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 26px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: 16px;
+      padding: 14px 22px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+
+    .btn-light {
+      background: white;
+      color: #4338ca;
+      border: 2px solid #4338ca;
+    }
+
+    .btn-dark {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white;
+    }
+
+    .counter {
+      margin-top: 16px;
+      color: #4b5563;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 14px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .card {
+        height: 500px;
+      }
+
+      .card-face {
+        padding: 20px;
+      }
+
+      .title {
+        font-size: 1.45rem;
+      }
+
+      .task-text {
+        font-size: 1.05rem;
+      }
+
+      .answer-main-green,
+      .answer-main-red {
+        font-size: 1.7rem;
+      }
+
+      .answer-full {
+        font-size: 1.05rem;
+      }
+    }
+  </style>
 </head>
+<body>
+  <div class="app">
+    <h1>🎲 El Imperativo (Tú)</h1>
+    <p class="subtitle">Mira la situación y las acciones. Piensa la respuesta y luego comprueba.</p>
 
-<body class="p-6 flex flex-col items-center">
+    <div class="badges">
+      <span class="badge green">✅ Afirmativo</span>
+      <span class="badge red">❌ Negativo</span>
+    </div>
 
-    <h1 class="text-3xl font-bold mb-4">🎲 Imperativo (Tú)</h1>
+    <div class="card-wrap">
+      <div id="card" class="card">
+        <div id="card-inner" class="card-inner">
 
-    <div id="card" class="relative w-80 h-96 perspective-1000 cursor-pointer">
-        
-        <div id="inner" class="card-inner w-full h-full relative">
+          <div class="card-face front">
+            <div>
+              <div id="icon-display" class="icon">🍽️</div>
+              <div id="situation-title" class="title">Restaurante elegante</div>
 
-            <!-- FRONT -->
-            <div class="card-front bg-white rounded-xl p-6 shadow-lg flex flex-col justify-between">
-                <div class="text-5xl text-center" id="icon">🍽️</div>
-                <h2 class="text-xl text-center font-bold" id="title">Restaurante</h2>
-
-                <div>
-                    <p><b>1.</b> <span id="v1">comer</span> despacio</p>
-                    <p><b>2.</b> <span id="v2">hablar</span> con la boca llena</p>
+              <div class="task-list">
+                <div class="task">
+                  <div class="task-number">1.</div>
+                  <div class="task-text"><span id="verb-1">comer</span> <span id="extra-1">despacio</span></div>
                 </div>
 
-                <p class="text-center text-gray-400 text-sm">Haz clic para ver</p>
+                <div class="task">
+                  <div class="task-number">2.</div>
+                  <div class="task-text"><span id="verb-2">hablar</span> <span id="extra-2">con la boca llena</span></div>
+                </div>
+              </div>
             </div>
 
-            <!-- BACK -->
-            <div class="card-back bg-indigo-600 text-white rounded-xl p-6 flex flex-col justify-center text-center">
-                <p class="text-2xl font-bold" id="a1">¡Come!</p>
-                <p id="fa1">¡Come despacio!</p>
+            <div class="hint">Haz clic en la tarjeta para ver la respuesta</div>
+          </div>
 
-                <hr class="my-4">
+          <div class="card-face back">
+            <div class="back-title">Tú deberías...</div>
 
-                <p class="text-2xl font-bold" id="a2">¡No hables!</p>
-                <p id="fa2">¡No hables con la boca llena!</p>
+            <div class="answer-block">
+              <div>
+                <div id="answer-1" class="answer-main-green">¡Come!</div>
+                <div id="full-answer-1" class="answer-full">¡Come despacio!</div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div>
+                <div id="answer-2" class="answer-main-red">¡No hables!</div>
+                <div id="full-answer-2" class="answer-full">¡No hables con la boca llena!</div>
+              </div>
             </div>
+
+            <div class="hint" style="color:#c7d2fe;">Haz clic para volver</div>
+          </div>
 
         </div>
+      </div>
     </div>
 
-    <div class="mt-6 flex gap-4">
-        <button onclick="prev()" class="px-4 py-2 bg-gray-200 rounded">Anterior</button>
-        <button onclick="next()" class="px-4 py-2 bg-indigo-600 text-white rounded">Siguiente</button>
+    <div class="controls">
+      <button id="prev-btn" class="btn-light">Anterior</button>
+      <button id="next-btn" class="btn-dark">Siguiente</button>
     </div>
 
-    <p class="mt-4" id="counter"></p>
+    <div id="counter" class="counter">Tarjeta 1 de 20</div>
+  </div>
 
-    <script>
-        const data = [
-            {icon:"🍽️", title:"Restaurante", v1:"comer", e1:"despacio", a1:"¡Come!", v2:"hablar", e2:"con la boca llena", a2:"¡No hables!"},
-            {icon:"🤒", title:"Enfermo", v1:"descansar", e1:"", a1:"¡Descansa!", v2:"salir", e2:"de fiesta", a2:"¡No salgas!"},
-            {icon:"📚", title:"Biblioteca", v1:"hablar", e1:"en voz baja", a1:"¡Habla!", v2:"hacer", e2:"ruido", a2:"¡No hagas!"},
-            {icon:"🏋️", title:"Gimnasio", v1:"estirarse", e1:"", a1:"¡Estírate!", v2:"hacer", e2:"rápido", a2:"¡No hagas!"},
-            {icon:"✈️", title:"Aeropuerto", v1:"llegar", e1:"temprano", a1:"¡Llega!", v2:"perder", e2:"el vuelo", a2:"¡No pierdas!"}
-        ];
+  <script>
+    const exercises = [
+      { icon: "🍽️", title: "Restaurante elegante", v1: "comer", extra1: "despacio", a1: "¡Come!", v2: "hablar", extra2: "con la boca llena", a2: "¡No hables!" },
+      { icon: "🤒", title: "Amigo enfermo", v1: "descansar", extra1: "", a1: "¡Descansa!", v2: "salir", extra2: "de fiesta", a2: "¡No salgas!" },
+      { icon: "📚", title: "Biblioteca", v1: "hablar", extra1: "en voz baja", a1: "¡Habla!", v2: "hacer", extra2: "ruido", a2: "¡No hagas ruido!" },
+      { icon: "🇪🇸", title: "Aprender español", v1: "practicar", extra1: "todos los días", a1: "¡Practica!", v2: "estudiar", extra2: "solo gramática", a2: "¡No estudies solo gramática!" },
+      { icon: "🏋️", title: "Gimnasio", v1: "estirarte", extra1: "", a1: "¡Estírate!", v2: "hacer", extra2: "los ejercicios rápido", a2: "¡No hagas los ejercicios rápido!" },
+      { icon: "💕", title: "Cita", v1: "escuchar", extra1: "", a1: "¡Escucha!", v2: "hablar", extra2: "solo de ti", a2: "¡No hables solo de ti!" },
+      { icon: "🏫", title: "Clase", v1: "participar", extra1: "", a1: "¡Participa!", v2: "copiar", extra2: "en el examen", a2: "¡No copies en el examen!" },
+      { icon: "✈️", title: "Aeropuerto", v1: "llegar", extra1: "temprano", a1: "¡Llega!", v2: "perder", extra2: "el billete", a2: "¡No pierdas el billete!" },
+      { icon: "🏠", title: "En casa", v1: "limpiar", extra1: "", a1: "¡Limpia!", v2: "dejar", extra2: "todo desordenado", a2: "¡No dejes todo desordenado!" },
+      { icon: "🚗", title: "En el coche", v1: "conducir", extra1: "con cuidado", a1: "¡Conduce!", v2: "ir", extra2: "muy rápido", a2: "¡No vayas muy rápido!" },
+      { icon: "🛒", title: "Supermercado", v1: "mirar", extra1: "los precios", a1: "¡Mira!", v2: "comprar", extra2: "cosas innecesarias", a2: "¡No compres cosas innecesarias!" },
+      { icon: "🧑‍⚕️", title: "Médico", v1: "explicar", extra1: "los síntomas", a1: "¡Explica!", v2: "ignorar", extra2: "las recomendaciones", a2: "¡No ignores las recomendaciones!" },
+      { icon: "🎉", title: "Fiesta", v1: "bailar", extra1: "", a1: "¡Baila!", v2: "beber", extra2: "demasiado", a2: "¡No bebas demasiado!" },
+      { icon: "🧑‍🤝‍🧑", title: "Con amigos", v1: "compartir", extra1: "", a1: "¡Comparte!", v2: "interrumpir", extra2: "", a2: "¡No interrumpas!" },
+      { icon: "🌙", title: "Antes de dormir", v1: "relajarte", extra1: "", a1: "¡Relájate!", v2: "ver", extra2: "series toda la noche", a2: "¡No veas series toda la noche!" },
+      { icon: "🍳", title: "En la cocina", v1: "seguir", extra1: "la receta", a1: "¡Sigue!", v2: "poner", extra2: "demasiada sal", a2: "¡No pongas demasiada sal!" },
+      { icon: "📖", title: "Estudiando", v1: "organizar", extra1: "el tiempo", a1: "¡Organiza!", v2: "empezar", extra2: "a última hora", a2: "¡No empieces a última hora!" },
+      { icon: "🧘", title: "Estrés", v1: "respirar", extra1: "profundo", a1: "¡Respira!", v2: "preocuparte", extra2: "por todo", a2: "¡No te preocupes por todo!" },
+      { icon: "🧳", title: "Viaje", v1: "hacer", extra1: "la maleta con tiempo", a1: "¡Haz la maleta con tiempo!", v2: "olvidar", extra2: "cosas importantes", a2: "¡No olvides cosas importantes!" },
+      { icon: "🏖️", title: "Vacaciones", v1: "descansar", extra1: "", a1: "¡Descansa!", v2: "planificar", extra2: "todo demasiado", a2: "¡No planifiques todo demasiado!" }
+    ];
 
-        let i = 0;
-        const inner = document.getElementById("inner");
+    let currentIndex = 0;
 
-        function update() {
-            let d = data[i];
-            document.getElementById("icon").innerText = d.icon;
-            document.getElementById("title").innerText = d.title;
-            document.getElementById("v1").innerText = d.v1;
-            document.getElementById("v2").innerText = d.v2;
+    const card = document.getElementById("card");
+    const cardInner = document.getElementById("card-inner");
 
-            document.getElementById("a1").innerText = d.a1;
-            document.getElementById("fa1").innerText = d.a1 + " " + d.e1;
+    function updateCard() {
+      const ex = exercises[currentIndex];
 
-            document.getElementById("a2").innerText = d.a2;
-            document.getElementById("fa2").innerText = d.a2 + " " + d.e2;
+      document.getElementById("icon-display").textContent = ex.icon;
+      document.getElementById("situation-title").textContent = ex.title;
+      document.getElementById("verb-1").textContent = ex.v1;
+      document.getElementById("extra-1").textContent = ex.extra1 ? " " + ex.extra1 : "";
+      document.getElementById("verb-2").textContent = ex.v2;
+      document.getElementById("extra-2").textContent = ex.extra2 ? " " + ex.extra2 : "";
 
-            document.getElementById("counter").innerText = `Tarjeta ${i+1} de ${data.length}`;
+      document.getElementById("answer-1").textContent = ex.a1;
+      document.getElementById("full-answer-1").textContent = ex.extra1 ? `${ex.a1} ${ex.extra1}` : ex.a1;
 
-            inner.classList.remove("is-flipped");
-        }
+      document.getElementById("answer-2").textContent = ex.a2;
+      document.getElementById("full-answer-2").textContent = ex.a2;
 
-        function next() {
-            i = (i + 1) % data.length;
-            update();
-        }
+      document.getElementById("counter").textContent = `Tarjeta ${currentIndex + 1} de ${exercises.length}`;
 
-        function prev() {
-            i = (i - 1 + data.length) % data.length;
-            update();
-        }
+      card.classList.remove("flipped");
+    }
 
-        document.getElementById("card").addEventListener("click", () => {
-            inner.classList.toggle("is-flipped");
-        });
+    card.addEventListener("click", () => {
+      card.classList.toggle("flipped");
+    });
 
-        update();
-    </script>
+    document.getElementById("next-btn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      currentIndex = (currentIndex + 1) % exercises.length;
+      updateCard();
+    });
 
+    document.getElementById("prev-btn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      currentIndex = (currentIndex - 1 + exercises.length) % exercises.length;
+      updateCard();
+    });
+
+    updateCard();
+  </script>
 </body>
 </html>
